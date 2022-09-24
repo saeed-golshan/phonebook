@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
   List<Contact> contacts = [];
-  bool isLogin = false;
   bool isLoading = true;
   final header = {
     'accept': 'application/json',
@@ -16,10 +15,10 @@ class ApplicationState extends ChangeNotifier {
 
   ApplicationState() {
     // contacts = fetchContacts();
-    fetchContacts();
+    _getContacts();
   }
 
-  fetchContacts() async {
+  _getContacts() async {
     await http
         .get(Uri.parse('https://api.restpoint.io/api/contacts'),
             headers: header)
@@ -36,11 +35,11 @@ class ApplicationState extends ChangeNotifier {
 
   addConatct(Contact contact) {
     contacts.add(contact);
-    postContact(contact);
+    _postContact(contact);
     notifyListeners();
   }
 
-  postContact(Contact contact) async {
+  _postContact(Contact contact) async {
     await http.post(Uri.parse('https://api.restpoint.io/api/contacts'),
         headers: header, body: jsonEncode(contact.toJson()));
   }
@@ -61,11 +60,11 @@ class ApplicationState extends ChangeNotifier {
 
   removeContact(Contact contact) {
     contacts.remove(contact);
-    deleteContact(contact);
+    _deleteContact(contact);
     notifyListeners();
   }
 
-  deleteContact(Contact contact) async {
+  _deleteContact(Contact contact) async {
     await http
         .delete(
           Uri.parse('https://api.restpoint.io/api/contacts/${contact.id}'),
@@ -79,11 +78,11 @@ class ApplicationState extends ChangeNotifier {
       (element) => element.id == contact.id,
     );
     contacts[index] = contact;
-    putContact(contact);
+    _putContact(contact);
     notifyListeners();
   }
 
-  putContact(Contact contact) async {
+  _putContact(Contact contact) async {
     await http.put(
         Uri.parse('https://api.restpoint.io/api/contacts/${contact.id}'),
         headers: header,
