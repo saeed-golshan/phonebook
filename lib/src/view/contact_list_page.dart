@@ -14,10 +14,18 @@ class ContactListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Phone Book')),
       body: Consumer<ApplicationState>(
-        builder: (context, state, child) => ListView.builder(
-            itemCount: state.contacts.length,
-            itemBuilder: ((context, index) =>
-                ContactItem(contact: state.contacts[index]))),
+        builder: (context, state, _) {
+          if (state.isLoading == true) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView.builder(
+                itemCount: state.contacts.length,
+                itemBuilder: ((context, index) =>
+                    ContactItem(contact: state.contacts[index])));
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {

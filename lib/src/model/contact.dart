@@ -9,7 +9,7 @@ class Contact {
   String lastName;
   String email;
   String notes;
-  List<String> picture;
+  List<String>? picture = [];
   String phone;
 
   Contact(
@@ -19,7 +19,7 @@ class Contact {
       required this.email,
       required this.notes,
       required this.phone,
-      required this.picture});
+      this.picture});
 
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);

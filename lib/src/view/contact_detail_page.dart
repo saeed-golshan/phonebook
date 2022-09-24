@@ -23,7 +23,7 @@ class ContatcDetailPage extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            ContactAvatar(url: contact.picture[0]),
+            ContactAvatar(url: contact.picture),
             ContactDetailItem(
                 icon: Icons.person,
                 text: '${contact.firstName} ${contact.lastName}'),

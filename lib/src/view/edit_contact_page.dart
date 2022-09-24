@@ -65,14 +65,16 @@ class _EditContatctPageState extends State<EditContatctPage> {
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)!.settings.arguments as String;
+
     Contact contact =
         Provider.of<ApplicationState>(context, listen: false).getContact(id);
+    final picture = contact.picture!.isNotEmpty ? contact.picture![0] : '';
     _firstName.text = contact.firstName;
     _lastName.text = contact.lastName;
     _email.text = contact.email;
     _phone.text = contact.phone;
     _notes.text = contact.notes;
-    _picture.text = contact.picture[0];
+    _picture.text = picture;
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Contact')),
       body: Padding(
@@ -146,7 +148,11 @@ class _EditContatctPageState extends State<EditContatctPage> {
             contact.email = _email.text;
             contact.notes = _notes.text;
             contact.phone = _phone.text;
-            contact.picture[0] = _picture.text;
+            if (contact.picture!.isNotEmpty) {
+              contact.picture![0] = _picture.text;
+            } else {
+              contact.picture?.add(_picture.text);
+            }
             Provider.of<ApplicationState>(context, listen: false)
                 .updateContact(contact);
             Navigator.pop(context);

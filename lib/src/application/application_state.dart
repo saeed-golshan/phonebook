@@ -1,25 +1,48 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:phonebook/src/model/api_response.dart';
 import 'package:phonebook/src/model/contact.dart';
+import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
-  late List<Contact> contacts;
+  List<Contact> contacts = [];
   bool isLogin = false;
-  bool isLoading = false;
+  bool isLoading = true;
+  final header = {
+    'accept': 'application/json',
+    'x-endpoint-key': '38444aae02c84851969f93e5d0e6eb37'
+  };
 
   ApplicationState() {
-    contacts = fetchContacts();
+    // contacts = fetchContacts();
+    fetchContacts();
   }
 
-  List<Contact> fetchContacts() {
-    return ResponseApi.fromJson(fakeApi).contacts;
-    //Todo: get from backend
+  fetchContacts() async {
+    await http
+        .get(Uri.parse('https://api.restpoint.io/api/contacts'),
+            headers: header)
+        .then((value) {
+      if (value.statusCode == 200) {
+        contacts = ResponseApi.fromJson(jsonDecode(value.body)).contacts;
+        // return allContact;
+      }
+    });
+
+    isLoading = false;
+    notifyListeners();
   }
 
   addConatct(Contact contact) {
     contacts.add(contact);
-    //Todo: Add to backend
+    postContact(contact);
     notifyListeners();
+  }
+
+  postContact(Contact contact) async {
+    await http.post(Uri.parse('https://api.restpoint.io/api/contacts'),
+        headers: header, body: jsonEncode(contact.toJson()));
   }
 
   getContact(String id) {
@@ -38,8 +61,17 @@ class ApplicationState extends ChangeNotifier {
 
   removeContact(Contact contact) {
     contacts.remove(contact);
-    //Todo: Remove from backend
+    deleteContact(contact);
     notifyListeners();
+  }
+
+  deleteContact(Contact contact) async {
+    await http
+        .delete(
+          Uri.parse('https://api.restpoint.io/api/contacts/${contact.id}'),
+          headers: header,
+        )
+        .then((value) => print(value.body));
   }
 
   updateContact(Contact contact) {
@@ -47,7 +79,14 @@ class ApplicationState extends ChangeNotifier {
       (element) => element.id == contact.id,
     );
     contacts[index] = contact;
-    //Todo: Update to backend
+    putContact(contact);
     notifyListeners();
+  }
+
+  putContact(Contact contact) async {
+    await http.put(
+        Uri.parse('https://api.restpoint.io/api/contacts/${contact.id}'),
+        headers: header,
+        body: jsonEncode(contact.toJson()));
   }
 }
