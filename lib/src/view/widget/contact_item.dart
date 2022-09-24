@@ -12,7 +12,9 @@ class ContactItem extends StatelessWidget {
     return Card(
       elevation: 3,
       child: ListTile(
-        leading: ContactAvatar(url: contact.picture),
+        leading: Hero(
+            tag: contact.id ?? '12',
+            child: ContactAvatar(url: contact.picture)),
         title: Text('${contact.firstName} ${contact.lastName}'),
         subtitle: Text(contact.phone),
         onTap: () => Navigator.pushNamed(context, ContatcDetailPage.routeName,
