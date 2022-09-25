@@ -65,12 +65,11 @@ class ApplicationState extends ChangeNotifier {
   }
 
   _deleteContact(Contact contact) async {
-    await http
-        .delete(
-          Uri.parse('https://api.restpoint.io/api/contacts/${contact.id}'),
-          headers: header,
-        )
-        .then((value) => print(value.body));
+    await http.delete(
+      Uri.parse('https://api.restpoint.io/api/contacts/${contact.id}'),
+      headers: header,
+    );
+    // .then((value) => print(value.body));
   }
 
   updateContact(Contact contact) {

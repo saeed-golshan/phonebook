@@ -18,43 +18,48 @@ class ContatcDetailPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Contact Detail')),
       body: Consumer<ApplicationState>(builder: (context, state, _) {
         final contact = state.getContact(id);
-        return Column(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Hero(
-                tag: contact.id ?? '12',
-                child: ContactAvatar(url: contact.picture)),
-            ContactDetailItem(
-                icon: Icons.person,
-                text: '${contact.firstName} ${contact.lastName}'),
-            ContactDetailItem(icon: Icons.phone, text: contact.phone),
-            ContactDetailItem(icon: Icons.email, text: contact.email),
-            ContactDetailItem(icon: Icons.note, text: contact.notes),
-            // ContactDetailItem(icon: Icons.photo, text: contact.picture[0]),
-            const SizedBox(
-              height: 100,
-            ),
-            SizedBox(
-              width: 150,
-              height: 50,
-              child: TextButton.icon(
-                  style: TextButton.styleFrom(
-                      foregroundColor: Colors.red,
-                      backgroundColor: Colors.red[50]),
-                  onPressed: () {
-                    showAlertDialog(context, contact);
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                  ),
-                  label: const Text(
-                    'Delete',
-                    style: TextStyle(fontSize: 15),
-                  )),
-            )
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Hero(
+                  tag: contact.id ?? '12',
+                  child: SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: ContactAvatar(url: contact.picture))),
+              ContactDetailItem(
+                  icon: Icons.person,
+                  text: '${contact.firstName} ${contact.lastName}'),
+              ContactDetailItem(icon: Icons.phone, text: contact.phone),
+              ContactDetailItem(icon: Icons.email, text: contact.email),
+              ContactDetailItem(icon: Icons.note, text: contact.notes),
+              // ContactDetailItem(icon: Icons.photo, text: contact.picture[0]),
+              const SizedBox(
+                height: 100,
+              ),
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: TextButton.icon(
+                    style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                        backgroundColor: Colors.red[50]),
+                    onPressed: () {
+                      showAlertDialog(context, contact);
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                    ),
+                    label: const Text(
+                      'Delete',
+                      style: TextStyle(fontSize: 15),
+                    )),
+              )
+            ],
+          ),
         );
       }),
       floatingActionButton: FloatingActionButton(

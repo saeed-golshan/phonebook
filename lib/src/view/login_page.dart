@@ -81,15 +81,19 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 50,
               ),
-              ElevatedButton(
-                  onPressed: (() {
-                    if (_formKey.currentState!.validate()) {
-                      box.put('login', true);
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, ContactListPage.routeName, (route) => false);
-                    }
-                  }),
-                  child: const Text('Login'))
+              SizedBox(
+                height: 50,
+                width: 150,
+                child: ElevatedButton(
+                    onPressed: (() {
+                      if (_formKey.currentState!.validate()) {
+                        box.put('login', true);
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            ContactListPage.routeName, (route) => false);
+                      }
+                    }),
+                    child: const Text('Login', style: TextStyle(fontSize: 15))),
+              )
             ],
           ),
         ),
